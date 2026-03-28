@@ -1,36 +1,106 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SSW Tracker
 
-## Getting Started
+## Visão geral
 
-First, run the development server:
+Aplicação full-stack em Next.js para consultar encomendas do portal público do SSW por CPF. A solução valida o CPF, consulta a listagem pública, tenta montar os detalhes completos de cada pacote e apresenta uma interface em português com busca, listagem e linha do tempo de eventos.
+
+## Stack tecnológica
+
+- Next.js 16 com App Router
+- TypeScript em modo `strict`
+- Tailwind CSS para toda a camada visual
+- Cheerio para parsing de HTML
+- Axios como dependência do projeto para a etapa de investigação e comparação do fluxo HTTP
+- Route Handlers para a API interna
+- Context + `sessionStorage` para cache client-side
+
+## Decisões de arquitetura
+
+- Scraping HTTP direto
+  - O portal público do SSW expõe um fluxo acessível via formulário HTML, então a abordagem principal usa requisições HTTP simples, sem browser headless.
+- Separação entre scraper, parser e API
+  - `src/lib/scraper.ts` cuida da comunicação HTTP.
+  - `src/lib/parser.ts` transforma HTML em dados tipados.
+  - `src/app/api/tracking/route.ts` orquestra validação, scraping, parsing e resposta JSON.
+- Cache client-side
+  - O resultado completo é guardado em contexto e `sessionStorage` para evitar novo scrape ao navegar da lista para o detalhe.
+
+## Como rodar localmente
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# abrir http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Para validar build:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npx tsc --noEmit
+npm run lint
+npm run build
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Estrutura do projeto
 
-## Learn More
+```text
+src/
+├── app/
+│   ├── api/tracking/route.ts
+│   ├── detail/[trackingId]/
+│   ├── tracking/[cpf]/
+│   ├── globals.css
+│   ├── layout.tsx
+│   └── page.tsx
+├── components/
+│   ├── layout/
+│   ├── tracking/
+│   └── ui/
+├── lib/
+│   ├── classNames.ts
+│   ├── parser.ts
+│   ├── scraper.ts
+│   ├── types.ts
+│   └── validators.ts
+└── utils/
+    ├── constants.ts
+    └── formatters.ts
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Documentação da API
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### `POST /api/tracking`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Body:
 
-## Deploy on Vercel
+```json
+{
+  "cpf": "00644516151"
+}
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Resposta de sucesso:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```json
+{
+  "success": true,
+  "data": {
+    "packages": [],
+    "detailsById": {}
+  },
+  "scrapedAt": "2026-03-28T03:30:18.493Z"
+}
+```
+
+Erros possíveis:
+
+- `INVALID_CPF`
+- `SCRAPING_FAILED`
+- `SSW_UNAVAILABLE`
+- `INTERNAL_ERROR`
+
+## Limitações conhecidas
+
+- O fluxo HTTP público real do SSW foi confirmado manualmente e também via probes isolados, mas durante a validação end-to-end do `POST /api/tracking` dentro do runtime do Next o endpoint ainda está retornando payload vazio para o CPF de teste. Isso indica uma divergência específica entre o runtime do app e os probes isolados do scraping.
+- O parser foi preparado para HTML real observado em março de 2026. Mudanças estruturais no markup do SSW podem exigir ajuste.
+- O campo `pickupDate` usa o valor exposto como `N Coleta` quando presente, porque esse é o dado disponível no HTML público detalhado.
