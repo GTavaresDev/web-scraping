@@ -71,9 +71,11 @@ export function TrackingListView() {
                 Rastreamento por CPF
               </p>
               <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
-                Encomendas
+                Lista de encomendas
               </h1>
-              <p className="text-sm text-slate-500">CPF: {maskCpfHidden(cpf ?? "")}</p>
+              <p className="text-sm text-slate-500">
+                CPF: {maskCpfHidden(cpf ?? "")}
+              </p>
             </div>
             <p className="text-sm font-medium text-slate-400 sm:text-right">
               {tracking.payload.packages.length} encomenda
@@ -83,7 +85,10 @@ export function TrackingListView() {
           </div>
         </div>
 
-        <PackageList items={tracking.payload.packages} scrapedAt={tracking.scrapedAt} />
+        <PackageList
+          items={tracking.payload.packages}
+          scrapedAt={tracking.scrapedAt}
+        />
       </div>
     </section>
   );

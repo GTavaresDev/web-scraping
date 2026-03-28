@@ -48,7 +48,19 @@ export function TrackingDetailView() {
             ← Voltar para lista
           </Link>
         </div>
-        <PackageDetail item={item} />
+        <div className="flex flex-col gap-3 rounded-2xl border border-slate-200 bg-white px-5 py-5 shadow-sm sm:flex-row sm:items-end sm:justify-between sm:px-6">
+          <div className="space-y-1">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
+              Rastreamento por CPF
+            </p>
+            <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
+              Detalhes da encomenda
+            </h1>
+          </div>
+        </div>
+        <div className="mt-6">
+          <PackageDetail item={item} />
+        </div>
       </div>
     </section>
   );
