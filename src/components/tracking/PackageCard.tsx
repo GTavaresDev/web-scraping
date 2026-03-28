@@ -41,7 +41,7 @@ export function PackageCard({ item }: PackageCardProps) {
           Última atualização
         </p>
         <div className="mt-2 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-          <p className="line-clamp-2 max-w-2xl text-sm leading-6 text-slate-600 transition-colors group-hover:text-slate-700">
+          <p className="max-w-2xl text-sm leading-6 text-slate-600 transition-colors group-hover:text-slate-700">
             {item.lastEvent.description}
           </p>
           <span className="shrink-0 text-xs font-medium text-slate-400 sm:text-sm">
