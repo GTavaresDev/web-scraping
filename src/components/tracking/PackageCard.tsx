@@ -11,20 +11,43 @@ export function PackageCard({ item }: PackageCardProps) {
   return (
     <Link
       href={`/detail/${item.id}`}
-      className="block rounded-xl border border-slate-200 bg-white p-5 transition-all hover:border-blue-300 hover:shadow-md"
+      className="group block rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition-all hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md sm:p-5"
     >
-      <div className="flex items-start justify-between gap-4">
-        <p className="font-mono text-sm text-slate-600">{item.nfNumber}</p>
-        <StatusBadge status={item.currentStatus} />
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <div className="min-w-0 space-y-2">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
+            Nota fiscal
+          </p>
+          <p className="font-mono text-sm font-medium text-slate-700 sm:text-[15px]">
+            {item.nfNumber}
+          </p>
+        </div>
+        <div className="sm:pt-0.5">
+          <StatusBadge status={item.currentStatus} />
+        </div>
       </div>
-      <div className="mt-3">
-        <p className="font-medium text-slate-800">{item.recipient}</p>
+
+      <div className="mt-4 border-t border-slate-100 pt-4">
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
+          Destinatário
+        </p>
+        <p className="mt-2 text-base font-semibold leading-6 text-slate-900">
+          {item.recipient}
+        </p>
       </div>
-      <div className="mt-4 flex items-center justify-between gap-4">
-        <p className="truncate text-sm text-slate-500">{item.lastEvent.description}</p>
-        <span className="shrink-0 text-sm text-slate-400">
-          {formatRelativeDate(item.lastEvent.dateTime)}
-        </span>
+
+      <div className="mt-4 rounded-xl bg-slate-50/80 px-4 py-3">
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
+          Última atualização
+        </p>
+        <div className="mt-2 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <p className="line-clamp-2 max-w-2xl text-sm leading-6 text-slate-600 transition-colors group-hover:text-slate-700">
+            {item.lastEvent.description}
+          </p>
+          <span className="shrink-0 text-xs font-medium text-slate-400 sm:text-sm">
+            {formatRelativeDate(item.lastEvent.dateTime)}
+          </span>
+        </div>
       </div>
     </Link>
   );

@@ -7,7 +7,7 @@ type PackageListProps = {
 
 export function PackageList({ items }: PackageListProps) {
   return (
-    <div className="grid gap-4">
+    <div className="grid gap-4 sm:gap-5">
       {items.map((item) => (
         <PackageCard key={item.id} item={item} />
       ))}

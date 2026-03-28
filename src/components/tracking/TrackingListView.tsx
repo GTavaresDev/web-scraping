@@ -21,7 +21,7 @@ export function TrackingListView() {
 
   if (tracking.cpf !== cpf) {
     return (
-      <section className="mx-auto flex w-full max-w-4xl px-4 py-10 sm:px-6">
+      <section className="mx-auto flex w-full max-w-5xl px-4 py-8 sm:px-6 sm:py-10">
         <div className="w-full">
           <Alert>Dados não disponíveis. Busque novamente pelo CPF.</Alert>
           <div className="mt-4">
@@ -36,8 +36,8 @@ export function TrackingListView() {
 
   if (tracking.payload.packages.length === 0) {
     return (
-      <section className="mx-auto flex w-full max-w-4xl px-4 py-10 sm:px-6">
-        <Card className="w-full p-8 text-center">
+      <section className="mx-auto flex w-full max-w-5xl px-4 py-8 sm:px-6 sm:py-10">
+        <Card className="mx-auto w-full max-w-3xl p-8 text-center sm:p-10">
           <p className="text-4xl">📦</p>
           <h1 className="mt-4 text-xl font-semibold text-slate-900">
             Nenhuma encomenda encontrada para este CPF.
@@ -56,25 +56,35 @@ export function TrackingListView() {
   }
 
   return (
-    <section className="mx-auto w-full max-w-4xl px-4 py-10 sm:px-6">
-      <div className="mb-6 flex flex-col gap-3">
-        <Link href="/" className="text-sm font-medium text-blue-600">
-          ← Voltar
-        </Link>
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <h1 className="text-3xl font-semibold text-slate-900">Encomendas</h1>
-            <p className="text-sm text-slate-500">CPF: {maskCpfHidden(cpf ?? "")}</p>
+    <section className="mx-auto w-full max-w-5xl px-4 py-8 sm:px-6 sm:py-10 lg:py-12">
+      <div className="mx-auto max-w-3xl">
+        <div className="mb-6 flex flex-col gap-3 sm:mb-8">
+          <Link
+            href="/"
+            className="inline-flex w-fit items-center justify-center rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-blue-700 focus-visible:ring-2 focus-visible:ring-blue-300 focus-visible:ring-offset-2"
+          >
+            ← Voltar
+          </Link>
+          <div className="flex flex-col gap-3 rounded-2xl border border-slate-200 bg-white px-5 py-5 shadow-sm sm:flex-row sm:items-end sm:justify-between sm:px-6">
+            <div className="space-y-1">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
+                Rastreamento por CPF
+              </p>
+              <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
+                Encomendas
+              </h1>
+              <p className="text-sm text-slate-500">CPF: {maskCpfHidden(cpf ?? "")}</p>
+            </div>
+            <p className="text-sm font-medium text-slate-400 sm:text-right">
+              {tracking.payload.packages.length} encomenda
+              {tracking.payload.packages.length > 1 ? "s" : ""} encontrada
+              {tracking.payload.packages.length > 1 ? "s" : ""}
+            </p>
           </div>
-          <p className="text-sm text-slate-400">
-            {tracking.payload.packages.length} encomenda
-            {tracking.payload.packages.length > 1 ? "s" : ""} encontrada
-            {tracking.payload.packages.length > 1 ? "s" : ""}
-          </p>
         </div>
-      </div>
 
-      <PackageList items={tracking.payload.packages} />
+        <PackageList items={tracking.payload.packages} />
+      </div>
     </section>
   );
 }
