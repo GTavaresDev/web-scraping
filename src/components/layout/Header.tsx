@@ -1,14 +1,19 @@
+import Image from "next/image";
 import Link from "next/link";
 import { APP_NAME } from "@/utils/constants";
+import hyerLogo from "../../../hyerlogo.jpg";
 
 export function Header() {
   return (
     <header className="border-b border-slate-200/80 bg-white/80 backdrop-blur">
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
         <Link href="/" className="flex items-center gap-3 text-slate-900">
-          <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-blue-600 text-lg text-white">
-            📦
-          </span>
+          <Image
+            src={hyerLogo}
+            alt={`${APP_NAME} logo`}
+            className="h-10 w-10 rounded-2xl object-cover"
+            priority
+          />
           <div>
             <p className="text-sm font-semibold tracking-[0.18em] text-slate-500 uppercase">
               Rastreamento
