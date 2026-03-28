@@ -1,0 +1,50 @@
+"use client";
+
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import { PackageDetail } from "@/components/tracking/PackageDetail";
+import { PackageDetailLoading } from "@/components/tracking/TrackingLoadingStates";
+import { useTracking } from "@/components/tracking/TrackingProvider";
+import { Alert } from "@/components/ui/Alert";
+import { Button } from "@/components/ui/Button";
+
+export function TrackingDetailView() {
+  const params = useParams<{ trackingId: string }>();
+  const trackingId = Array.isArray(params.trackingId)
+    ? params.trackingId[0]
+    : params.trackingId;
+  const tracking = useTracking();
+  const item = tracking.payload.detailsById[trackingId ?? ""];
+
+  if (!tracking.hydrated) {
+    return <PackageDetailLoading />;
+  }
+
+  if (!item) {
+    return (
+      <section className="mx-auto flex w-full max-w-4xl px-4 py-10 sm:px-6">
+        <div className="w-full">
+          <Alert>Dados não disponíveis. Busque novamente pelo CPF.</Alert>
+          <div className="mt-4">
+            <Link href="/">
+              <Button type="button">Ir para a busca</Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  const backHref = tracking.cpf ? `/tracking/${tracking.cpf}` : "/";
+
+  return (
+    <section className="mx-auto w-full max-w-4xl px-4 py-10 sm:px-6">
+      <div className="mb-6">
+        <Link href={backHref} className="text-sm font-medium text-blue-600">
+          ← Voltar para lista
+        </Link>
+      </div>
+      <PackageDetail item={item} />
+    </section>
+  );
+}
