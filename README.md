@@ -10,7 +10,6 @@ Aplicação full-stack em Next.js para consultar encomendas do portal público d
 - TypeScript em modo `strict`
 - Tailwind CSS para toda a camada visual
 - Cheerio para parsing de HTML
-- Axios como dependência do projeto para a etapa de investigação e comparação do fluxo HTTP
 - Route Handlers para a API interna
 - Context + `sessionStorage` para cache client-side
 
