@@ -94,6 +94,7 @@ export type TrackingCache = {
   cpf: string;
   payload: TrackingPayload;
   scrapedAt: string;
+  userName: string | null;
 };
 
 export type TrackingStoreState = TrackingCache & {

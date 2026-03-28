@@ -30,6 +30,15 @@ export function normalizeText(value: string | null | undefined): string {
     .trim();
 }
 
+export function sanitizeRecipientName(value: string | null | undefined): string {
+  const normalized = normalizeText(value);
+
+  return normalized
+    .replace(/[^\p{L}\p{M}\p{N}\s'-]+/gu, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 export function parseSswDateTime(value: string): Date | null {
   const normalized = normalizeText(value);
   const match = normalized.match(

@@ -1,8 +1,17 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useTracking } from "@/components/tracking/TrackingProvider";
 import { APP_NAME } from "@/utils/constants";
 
 export function Header() {
+  const pathname = usePathname();
+  const { userName } = useTracking();
+  const shouldShowUserName =
+    pathname.startsWith("/tracking/") || pathname.startsWith("/detail/");
+
   return (
     <header className="border-b border-slate-200/80 bg-white/80 backdrop-blur">
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
@@ -23,7 +32,9 @@ export function Header() {
           </div>
         </Link>
         <p className="hidden text-sm text-slate-500 sm:block">
-          Consulta de encomendas por CPF
+          {shouldShowUserName && userName
+            ? `Olá, ${userName}`
+            : "Consulta de encomendas por CPF"}
         </p>
       </div>
     </header>

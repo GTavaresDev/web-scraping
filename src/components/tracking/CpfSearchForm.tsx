@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import type { TrackingError, TrackingResponse } from "@/lib/types";
 import { validateCpf } from "@/lib/validators";
-import { SAMPLE_CPF } from "@/utils/constants";
 import { maskCpf, onlyDigits } from "@/utils/formatters";
 
 function getValidationMessage(cpf: string, touched: boolean): string {
@@ -118,9 +117,7 @@ export function CpfSearchForm() {
           <p id="cpf-error" className="text-sm text-red-600">
             {validationMessage}
           </p>
-        ) : (
-          <p className="text-sm text-slate-400">Teste com o CPF {maskCpf(SAMPLE_CPF)}.</p>
-        )}
+        ) : null}
       </div>
 
       {error ? <p className="text-sm text-red-600">{error}</p> : null}

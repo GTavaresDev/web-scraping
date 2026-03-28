@@ -8,10 +8,13 @@ import {
   type ReactNode,
 } from "react";
 import type { TrackingCache, TrackingStoreState } from "@/lib/types";
+import { sanitizeRecipientName } from "@/utils/formatters";
 import { TRACKING_STORAGE_KEY } from "@/utils/constants";
 
+type TrackingResultInput = Omit<TrackingCache, "userName">;
+
 type TrackingContextValue = TrackingStoreState & {
-  setTrackingResult: (cache: TrackingCache) => void;
+  setTrackingResult: (cache: TrackingResultInput) => void;
   clearTrackingResult: () => void;
 };
 
@@ -22,8 +25,24 @@ const emptyState: TrackingStoreState = {
     detailsById: {},
   },
   scrapedAt: "",
+  userName: null,
   hydrated: false,
 };
+
+function getUserName(cache: Pick<TrackingCache, "payload">): string | null {
+  const recipient =
+    cache.payload.packages[0]?.recipient ??
+    Object.values(cache.payload.detailsById)[0]?.recipient ??
+    null;
+
+  if (!recipient) {
+    return null;
+  }
+
+  const trimmedRecipient = sanitizeRecipientName(recipient);
+
+  return trimmedRecipient || null;
+}
 
 const TrackingContext = createContext<TrackingContextValue | null>(null);
 
@@ -41,11 +60,18 @@ export function TrackingProvider({ children }: { children: ReactNode }) {
     }
 
     try {
-      const parsed = JSON.parse(raw) as TrackingCache;
+      const parsed = JSON.parse(raw) as Partial<TrackingCache> &
+        TrackingResultInput;
+      const cache: TrackingCache = {
+        cpf: parsed.cpf,
+        payload: parsed.payload,
+        scrapedAt: parsed.scrapedAt,
+        userName: parsed.userName ?? getUserName(parsed),
+      };
 
       window.requestAnimationFrame(() => {
         setState({
-          ...parsed,
+          ...cache,
           hydrated: true,
         });
       });
@@ -57,10 +83,15 @@ export function TrackingProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  function setTrackingResult(cache: TrackingCache) {
-    window.sessionStorage.setItem(TRACKING_STORAGE_KEY, JSON.stringify(cache));
-    setState({
+  function setTrackingResult(cache: TrackingResultInput) {
+    const nextCache: TrackingCache = {
       ...cache,
+      userName: getUserName(cache),
+    };
+
+    window.sessionStorage.setItem(TRACKING_STORAGE_KEY, JSON.stringify(nextCache));
+    setState({
+      ...nextCache,
       hydrated: true,
     });
   }
