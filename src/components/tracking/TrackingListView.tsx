@@ -83,7 +83,7 @@ export function TrackingListView() {
           </div>
         </div>
 
-        <PackageList items={tracking.payload.packages} />
+        <PackageList items={tracking.payload.packages} scrapedAt={tracking.scrapedAt} />
       </div>
     </section>
   );

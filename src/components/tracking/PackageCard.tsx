@@ -5,9 +5,10 @@ import { StatusBadge } from "@/components/tracking/StatusBadge";
 
 type PackageCardProps = {
   item: PackageSummary;
+  scrapedAt?: string;
 };
 
-export function PackageCard({ item }: PackageCardProps) {
+export function PackageCard({ item, scrapedAt }: PackageCardProps) {
   return (
     <Link
       href={`/detail/${item.id}`}
@@ -45,7 +46,7 @@ export function PackageCard({ item }: PackageCardProps) {
             {item.lastEvent.description}
           </p>
           <span className="shrink-0 text-xs font-medium text-slate-400 sm:text-sm">
-            {formatRelativeDate(item.lastEvent.dateTime)}
+            {formatRelativeDate(item.lastEvent.dateTime, scrapedAt)}
           </span>
         </div>
       </div>

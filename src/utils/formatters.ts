@@ -48,14 +48,18 @@ export function parseSswDateTime(value: string): Date | null {
   return Number.isNaN(parsed.getTime()) ? null : parsed;
 }
 
-export function formatRelativeDate(value: string): string {
+export function formatRelativeDate(value: string, referenceTime?: string): string {
   const parsed = parseSswDateTime(value);
 
   if (!parsed) {
     return "Data indisponível";
   }
 
-  const diffMs = Date.now() - parsed.getTime();
+  const referenceDate = referenceTime ? new Date(referenceTime) : null;
+  const now = referenceDate && !Number.isNaN(referenceDate.getTime())
+    ? referenceDate.getTime()
+    : Date.now();
+  const diffMs = now - parsed.getTime();
   const minutes = Math.max(1, Math.floor(diffMs / 60_000));
 
   if (minutes < 60) {
