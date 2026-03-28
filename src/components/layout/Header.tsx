@@ -17,13 +17,13 @@ export function Header() {
           />
           <div>
             <p className="text-sm font-semibold tracking-[0.18em] text-slate-500 uppercase">
-              Rastreamento
+              Área do cliente
             </p>
-            <p className="text-lg font-semibold">{APP_NAME}</p>
+            <p className="text-lg font-semibold">Rastreio</p>
           </div>
         </Link>
         <p className="hidden text-sm text-slate-500 sm:block">
-          Consulta pública de encomendas por CPF
+          Consulta de encomendas por CPF
         </p>
       </div>
     </header>
