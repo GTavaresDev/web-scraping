@@ -61,7 +61,7 @@ export function TrackingListView() {
         <div className="mb-6 flex flex-col gap-3 sm:mb-8">
           <Link
             href="/"
-            className="inline-flex w-fit items-center justify-center text-sm font-medium text-blue-600 transition-colors hover:text-blue-700 focus-visible:ring-2 focus-visible:ring-blue-300 focus-visible:ring-offset-2"
+            className="inline-flex w-fit items-center justify-center text-sm font-medium text-slate-600 transition-colors hover:text-slate-800 focus-visible:ring-2 focus-visible:ring-slate-300 focus-visible:ring-offset-2"
           >
             ← Voltar
           </Link>

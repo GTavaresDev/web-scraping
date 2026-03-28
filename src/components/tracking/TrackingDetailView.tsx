@@ -43,7 +43,7 @@ export function TrackingDetailView() {
         <div className="mb-6 sm:mb-8">
           <Link
             href={backHref}
-            className="inline-flex w-fit items-center justify-center text-sm font-medium text-blue-600 transition-colors hover:text-blue-700 focus-visible:ring-2 focus-visible:ring-blue-300 focus-visible:ring-offset-2"
+            className="inline-flex w-fit items-center justify-center text-sm font-medium text-slate-600 transition-colors hover:text-slate-800 focus-visible:ring-2 focus-visible:ring-slate-300 focus-visible:ring-offset-2"
           >
             ← Voltar para lista
           </Link>
