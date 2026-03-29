@@ -22,7 +22,6 @@ const emptyState: TrackingStoreState = {
   cpf: "",
   payload: {
     packages: [],
-    detailsById: {},
   },
   scrapedAt: "",
   userName: null,
@@ -30,10 +29,7 @@ const emptyState: TrackingStoreState = {
 };
 
 function getUserName(cache: Pick<TrackingCache, "payload">): string | null {
-  const recipient =
-    cache.payload.packages[0]?.recipient ??
-    Object.values(cache.payload.detailsById)[0]?.recipient ??
-    null;
+  const recipient = cache.payload.packages[0]?.recipient ?? null;
 
   if (!recipient) {
     return null;
@@ -89,7 +85,10 @@ export function TrackingProvider({ children }: { children: ReactNode }) {
       userName: getUserName(cache),
     };
 
-    window.sessionStorage.setItem(TRACKING_STORAGE_KEY, JSON.stringify(nextCache));
+    window.sessionStorage.setItem(
+      TRACKING_STORAGE_KEY,
+      JSON.stringify(nextCache),
+    );
     setState({
       ...nextCache,
       hydrated: true,

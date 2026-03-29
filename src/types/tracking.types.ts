@@ -36,7 +36,6 @@ export type PackageDetail = {
 
 export type TrackingPayload = {
   packages: PackageSummary[];
-  detailsById: Record<string, PackageDetail>;
 };
 
 export type TrackingListItem = {

@@ -110,7 +110,7 @@ Responsabilidade:
 
 - validar o CPF
 - chamar scraper e parser na ordem correta
-- montar `packages` e `detailsById`
+- montar `packages` para listagem
 - devolver um `TrackingResponse` pronto para a camada HTTP
 
 ## Como rodar o projeto localmente
@@ -194,7 +194,7 @@ POST /api/tracking
 
 ### Resposta de sucesso
 
-O contrato real de sucesso retorna `data` com `packages` e `detailsById`, além de `scrapedAt`.
+O contrato real de sucesso retorna `data` com `packages`, além de `scrapedAt`.
 
 ```json
 {
@@ -216,32 +216,54 @@ O contrato real de sucesso retorna `data` com `packages` e `detailsById`, além 
         },
         "eventCount": 4
       }
-    ],
-    "detailsById": {
-      "abc123": {
-        "id": "abc123",
-        "recipient": "Nome do destinatário",
-        "nfNumber": "123456",
-        "orderNumber": "78910",
-        "pickupDate": null,
-        "currentStatus": "em_transito",
-        "events": [
-          {
-            "dateTime": "27/03/2026 14:30",
-            "location": "São Paulo - SP",
-            "unit": "Unidade SP",
-            "description": "Mercadoria em trânsito",
-            "status": "em_transito"
-          }
-        ]
-      }
-    }
+    ]
   },
   "scrapedAt": "2026-03-28T03:30:18.493Z"
 }
 ```
 
 Quando não há encomendas para o CPF informado, a API mantém `success: true` e devolve coleções vazias.
+
+### Endpoint de detalhe sob demanda
+
+```http
+POST /api/tracking/detail
+```
+
+### Exemplo de request
+
+```json
+{
+  "cpf": "12345678900",
+  "trackingId": "abc123"
+}
+```
+
+### Resposta de sucesso
+
+```json
+{
+  "success": true,
+  "data": {
+    "id": "abc123",
+    "recipient": "Nome do destinatário",
+    "nfNumber": "123456",
+    "orderNumber": "78910",
+    "pickupDate": null,
+    "currentStatus": "em_transito",
+    "events": [
+      {
+        "dateTime": "27/03/2026 14:30",
+        "location": "São Paulo - SP",
+        "unit": "Unidade SP",
+        "description": "Mercadoria em trânsito",
+        "status": "em_transito"
+      }
+    ]
+  },
+  "scrapedAt": "2026-03-28T03:30:18.493Z"
+}
+```
 
 ### Resposta de erro
 
@@ -260,6 +282,9 @@ Quando não há encomendas para o CPF informado, a API mantém `success: true` e
 
 - `SCRAPING_FAILED`  
   Falha ao interpretar ou processar a resposta do portal externo.
+
+- `TRACKING_NOT_FOUND`  
+  A encomenda solicitada não foi encontrada para o CPF informado.
 
 - `SSW_UNAVAILABLE`  
   O serviço externo não respondeu adequadamente ou excedeu o tempo limite.

@@ -10,6 +10,7 @@ import { validateCpf } from "@/utils/validators/cpf.validator";
 import type {
   PackageDetail,
   PackageSummary,
+  TrackingDetailResponse,
   TrackingError,
   TrackingListItem,
   TrackingResponse,
@@ -28,7 +29,10 @@ function createTrackingServiceError(
   return error;
 }
 
-function toSummary(detail: PackageDetail, fallback: TrackingListItem): PackageSummary {
+function toSummary(
+  detail: PackageDetail,
+  fallback: TrackingListItem,
+): PackageSummary {
   const lastEvent = detail.events[0] ?? fallback.lastEvent;
 
   return {
@@ -58,29 +62,65 @@ export async function getTrackingByCpf(cpf: string): Promise<TrackingResponse> {
       success: true,
       data: {
         packages: [],
-        detailsById: {},
       },
       scrapedAt,
     };
   }
 
-  const detailEntries = await Promise.all(
+  const packages = await Promise.all(
     listItems.map(async (item) => {
       const detailHtml = await scrapeTrackingDetail(item.detailPath);
       const detail = parseTrackingDetailHtml(detailHtml, item);
 
-      return [item.id, detail] as const;
+      return toSummary(detail, item);
     }),
   );
-  const detailsById = Object.fromEntries(detailEntries);
-  const packages = listItems.map((item) => toSummary(detailsById[item.id], item));
 
   return {
     success: true,
     data: {
       packages,
-      detailsById,
     },
     scrapedAt,
+  };
+}
+
+export async function getTrackingDetailById(
+  cpf: string,
+  trackingId: string,
+): Promise<TrackingDetailResponse> {
+  const validation = validateCpf(cpf);
+
+  if (!validation.valid) {
+    throw createTrackingServiceError("INVALID_CPF", "CPF inválido.");
+  }
+
+  const normalizedTrackingId = trackingId.trim();
+
+  if (!normalizedTrackingId) {
+    throw createTrackingServiceError(
+      "TRACKING_NOT_FOUND",
+      "Encomenda não encontrada para este CPF.",
+    );
+  }
+
+  const listHtml = await scrapeTrackingByCpf(validation.cleaned);
+  const listItems = parseTrackingListHtml(listHtml);
+  const targetItem = listItems.find((item) => item.id === normalizedTrackingId);
+
+  if (!targetItem) {
+    throw createTrackingServiceError(
+      "TRACKING_NOT_FOUND",
+      "Encomenda não encontrada para este CPF.",
+    );
+  }
+
+  const detailHtml = await scrapeTrackingDetail(targetItem.detailPath);
+  const detail = parseTrackingDetailHtml(detailHtml, targetItem);
+
+  return {
+    success: true,
+    data: detail,
+    scrapedAt: new Date().toISOString(),
   };
 }

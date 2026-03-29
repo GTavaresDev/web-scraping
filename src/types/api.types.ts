@@ -16,6 +16,7 @@ export type TrackingErrorCode =
   | "INVALID_CPF"
   | "SCRAPING_FAILED"
   | "NO_PACKAGES"
+  | "TRACKING_NOT_FOUND"
   | "SSW_UNAVAILABLE"
   | "INTERNAL_ERROR";
 

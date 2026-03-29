@@ -53,11 +53,11 @@ export function PackageList({ items, scrapedAt }: PackageListProps) {
                   key={item.id}
                   className="cursor-pointer align-top transition-colors hover:bg-slate-50/70 focus-visible:bg-slate-50"
                   tabIndex={0}
-                  onClick={() => router.push(`/detail/${item.id}`)}
+                  onClick={() => router.push(`/tracking/${item.id}`)}
                   onKeyDown={(event) => {
                     if (event.key === "Enter" || event.key === " ") {
                       event.preventDefault();
-                      router.push(`/detail/${item.id}`);
+                      router.push(`/tracking/${item.id}`);
                     }
                   }}
                 >

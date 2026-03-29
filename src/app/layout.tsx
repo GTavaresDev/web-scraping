@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { TrackingProvider } from "@/features/tracking/provider/TrackingProvider";
+import { APP_NAME } from "@/utils/constants";
 import "./globals.css";
 
 const inter = Inter({
@@ -12,8 +13,13 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "SSW Rastreio",
+  title: APP_NAME,
   description: "Rastreie encomendas por CPF no SSW.",
+  icons: {
+    icon: "/images/hyerlogo.jpg",
+    shortcut: "/images/hyerlogo.jpg",
+    apple: "/images/hyerlogo.jpg",
+  },
 };
 
 export default function RootLayout({

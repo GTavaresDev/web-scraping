@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { getTrackingByCpf } from "@/services/tracking.service";
-import type { TrackingError, TrackingResponse } from "@/types";
+import { getTrackingDetailById } from "@/services/tracking.service";
+import type { TrackingDetailResponse, TrackingError } from "@/types";
 
 export const runtime = "nodejs";
 
@@ -21,16 +21,30 @@ function buildError(
 
 export async function POST(request: Request) {
   try {
-    const body = (await request.json()) as { cpf?: string };
-    const data = await getTrackingByCpf(body.cpf ?? "");
+    const body = (await request.json()) as {
+      cpf?: string;
+      trackingId?: string;
+    };
+    const data = await getTrackingDetailById(
+      body.cpf ?? "",
+      body.trackingId ?? "",
+    );
 
-    return NextResponse.json<TrackingResponse>(data);
+    return NextResponse.json<TrackingDetailResponse>(data);
   } catch (error) {
     if (error instanceof Error && "code" in error) {
       const code = String(error.code);
 
       if (code === "INVALID_CPF") {
         return buildError("INVALID_CPF", "CPF inválido.", 400);
+      }
+
+      if (code === "TRACKING_NOT_FOUND") {
+        return buildError(
+          "TRACKING_NOT_FOUND",
+          "Encomenda não encontrada para este CPF.",
+          404,
+        );
       }
 
       if (code === "SSW_UNAVAILABLE") {
@@ -48,19 +62,11 @@ export async function POST(request: Request) {
           502,
         );
       }
-
-      if (code === "TRACKING_NOT_FOUND") {
-        return buildError(
-          "TRACKING_NOT_FOUND",
-          "Encomenda não encontrada.",
-          404,
-        );
-      }
     }
 
     return buildError(
       "INTERNAL_ERROR",
-      "Ocorreu um erro interno ao buscar as encomendas.",
+      "Ocorreu um erro interno ao buscar os detalhes da encomenda.",
       500,
     );
   }
