@@ -1,20 +1,6 @@
 import { NextResponse } from "next/server";
-import {
-  parseTrackingDetailHtml,
-  parseTrackingListHtml,
-} from "@/utils/parsers/tracking.parser";
-import {
-  scrapeTrackingByCpf,
-  scrapeTrackingDetail,
-} from "@/utils/scrapers/tracking.scraper";
-import type {
-  PackageDetail,
-  PackageSummary,
-  TrackingError,
-  TrackingListItem,
-  TrackingResponse,
-} from "@/types";
-import { validateCpf } from "@/utils/validators/cpf.validator";
+import { getTrackingByCpf } from "@/services/tracking.service";
+import type { TrackingError, TrackingResponse } from "@/types";
 
 export const runtime = "nodejs";
 
@@ -29,64 +15,19 @@ function buildError(code: TrackingError["code"], error: string, status: number) 
   );
 }
 
-function toSummary(detail: PackageDetail, fallback: TrackingListItem): PackageSummary {
-  const lastEvent = detail.events[0] ?? fallback.lastEvent;
-
-  return {
-    id: detail.id,
-    recipient: detail.recipient,
-    nfNumber: detail.nfNumber,
-    orderNumber: detail.orderNumber,
-    currentStatus: detail.currentStatus,
-    lastEvent,
-    eventCount: detail.events.length,
-  };
-}
-
 export async function POST(request: Request) {
   try {
     const body = (await request.json()) as { cpf?: string };
-    const validation = validateCpf(body.cpf ?? "");
+    const data = await getTrackingByCpf(body.cpf ?? "");
 
-    if (!validation.valid) {
-      return buildError("INVALID_CPF", "CPF inválido.", 400);
-    }
-
-    const listHtml = await scrapeTrackingByCpf(validation.cleaned);
-    const listItems = parseTrackingListHtml(listHtml);
-
-    if (listItems.length === 0) {
-      return NextResponse.json<TrackingResponse>({
-        success: true,
-        data: {
-          packages: [],
-          detailsById: {},
-        },
-        scrapedAt: new Date().toISOString(),
-      });
-    }
-
-    const detailEntries = await Promise.all(
-      listItems.map(async (item) => {
-        const detailHtml = await scrapeTrackingDetail(item.detailPath);
-        const detail = parseTrackingDetailHtml(detailHtml, item);
-        return [item.id, detail] as const;
-      }),
-    );
-    const detailsById = Object.fromEntries(detailEntries);
-    const packages = listItems.map((item) => toSummary(detailsById[item.id], item));
-
-    return NextResponse.json<TrackingResponse>({
-      success: true,
-      data: {
-        packages,
-        detailsById,
-      },
-      scrapedAt: new Date().toISOString(),
-    });
+    return NextResponse.json<TrackingResponse>(data);
   } catch (error) {
     if (error instanceof Error && "code" in error) {
       const code = String(error.code);
+
+      if (code === "INVALID_CPF") {
+        return buildError("INVALID_CPF", "CPF inválido.", 400);
+      }
 
       if (code === "SSW_UNAVAILABLE") {
         return buildError(
