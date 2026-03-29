@@ -10,7 +10,9 @@ export function Header() {
   const pathname = usePathname();
   const { userName } = useTracking();
   const shouldShowUserName =
-    pathname.startsWith("/tracking/") || pathname.startsWith("/detail/");
+    pathname === "/tracking" ||
+    pathname.startsWith("/tracking/") ||
+    pathname.startsWith("/detail/");
 
   return (
     <header className="border-b border-slate-200/80 bg-white/80 backdrop-blur">

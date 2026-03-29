@@ -1,14 +1,20 @@
 import { NextResponse } from "next/server";
-import { parseTrackingDetailHtml, parseTrackingListHtml } from "@/lib/parser";
-import { scrapeTrackingByCpf, scrapeTrackingDetail } from "@/lib/scraper";
+import {
+  parseTrackingDetailHtml,
+  parseTrackingListHtml,
+} from "@/utils/parsers/tracking.parser";
+import {
+  scrapeTrackingByCpf,
+  scrapeTrackingDetail,
+} from "@/utils/scrapers/tracking.scraper";
 import type {
   PackageDetail,
   PackageSummary,
   TrackingError,
   TrackingListItem,
   TrackingResponse,
-} from "@/lib/types";
-import { validateCpf } from "@/lib/validators";
+} from "@/types";
+import { validateCpf } from "@/utils/validators/cpf.validator";
 
 export const runtime = "nodejs";
 

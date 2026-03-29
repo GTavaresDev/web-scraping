@@ -1,28 +1,5 @@
 import { STATUS_LABELS } from "@/utils/constants";
 
-export function onlyDigits(value: string): string {
-  return value.replace(/\D/g, "");
-}
-
-export function maskCpf(value: string): string {
-  const digits = onlyDigits(value).slice(0, 11);
-
-  return digits
-    .replace(/(\d{3})(\d)/, "$1.$2")
-    .replace(/(\d{3})(\d)/, "$1.$2")
-    .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
-}
-
-export function maskCpfHidden(value: string): string {
-  const digits = onlyDigits(value);
-
-  if (digits.length !== 11) {
-    return maskCpf(digits);
-  }
-
-  return `•••.•••.${digits.slice(6, 9)}-${digits.slice(9)}`;
-}
-
 export function normalizeText(value: string | null | undefined): string {
   return (value ?? "")
     .replace(/\u00a0/g, " ")
@@ -65,9 +42,10 @@ export function formatRelativeDate(value: string, referenceTime?: string): strin
   }
 
   const referenceDate = referenceTime ? new Date(referenceTime) : null;
-  const now = referenceDate && !Number.isNaN(referenceDate.getTime())
-    ? referenceDate.getTime()
-    : Date.now();
+  const now =
+    referenceDate && !Number.isNaN(referenceDate.getTime())
+      ? referenceDate.getTime()
+      : Date.now();
   const diffMs = now - parsed.getTime();
   const minutes = Math.max(1, Math.floor(diffMs / 60_000));
 

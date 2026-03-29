@@ -1,4 +1,4 @@
-import type { PackageSummary } from "@/lib/types";
+import type { PackageSummary } from "@/types";
 import { PackageCard } from "@/components/tracking/PackageCard";
 
 type PackageListProps = {

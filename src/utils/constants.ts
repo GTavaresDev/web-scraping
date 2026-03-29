@@ -1,4 +1,4 @@
-import type { PackageStatus } from "@/lib/types";
+import type { PackageStatus } from "@/types";
 
 export const APP_NAME = "SSW Rastreio";
 export const SSW_BASE_URL = "https://ssw.inf.br";

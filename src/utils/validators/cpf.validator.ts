@@ -1,5 +1,5 @@
-import type { CpfValidationResult } from "@/lib/types";
-import { onlyDigits } from "@/utils/formatters";
+import type { CpfValidationResult } from "@/types";
+import { onlyDigits } from "@/utils/formatters/cpf.formatter";
 
 function calculateCpfDigit(base: string, factor: number): number {
   const total = base
@@ -23,8 +23,7 @@ export function validateCpf(value: string): CpfValidationResult {
 
   const firstDigit = calculateCpfDigit(cleaned.slice(0, 9), 10);
   const secondDigit = calculateCpfDigit(`${cleaned.slice(0, 9)}${firstDigit}`, 11);
-  const valid =
-    cleaned === `${cleaned.slice(0, 9)}${firstDigit}${secondDigit}`;
+  const valid = cleaned === `${cleaned.slice(0, 9)}${firstDigit}${secondDigit}`;
 
   return { valid, cleaned };
 }

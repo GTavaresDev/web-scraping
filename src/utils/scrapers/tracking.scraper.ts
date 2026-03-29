@@ -1,7 +1,7 @@
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import * as cheerio from "cheerio";
-import type { ScraperError, SswFormFields } from "@/lib/types";
+import type { ScraperError, SswFormFields } from "@/types";
 import { REQUEST_TIMEOUT_MS, SSW_BASE_URL, SSW_TRACKING_URL } from "@/utils/constants";
 
 const execFileAsync = promisify(execFile);
