@@ -4,9 +4,12 @@ import type {
   PackageStatus,
   TrackingEvent,
   TrackingListItem,
-} from "@/lib/types";
+} from "@/types";
 import { STATUS_KEYWORDS } from "@/utils/constants";
-import { normalizeText, parseSswDateTime } from "@/utils/formatters";
+import {
+  normalizeText,
+  parseSswDateTime,
+} from "@/utils/formatters/date.formatter";
 
 function createTrackingId(detailPath: string, nfNumber: string, orderNumber: string): string {
   const detailId = detailPath.match(/[?&]id=([^&]+)/)?.[1];
@@ -28,13 +31,15 @@ function deriveStatus(value: string): PackageStatus {
     }
   }
 
-  return normalized
-    .slice(0, 40)
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9]+/g, "_")
-    .replace(/^_|_$/g, "") || "pendente";
+  return (
+    normalized
+      .slice(0, 40)
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]+/g, "_")
+      .replace(/^_|_$/g, "") || "pendente"
+  );
 }
 
 function buildDateTime(lines: string[]): string {
@@ -120,7 +125,9 @@ export function parseTrackingListHtml(html: string): TrackingListItem[] {
       const title = normalizeText(statusCell("p.titulo").first().text());
       const detail = normalizeText(statusCell("p.tdb").first().text());
       const unit = normalizeText(statusCell("font").first().text()).replace(/[()]/g, "");
-      const anchorPath = extractPathFromOnclick(statusCell("a[onclick]").first().attr("onclick") ?? "");
+      const anchorPath = extractPathFromOnclick(
+        statusCell("a[onclick]").first().attr("onclick") ?? "",
+      );
       const detailPath = rowPath || anchorPath;
       const nfNumber = documentLines[0] ?? "Informação indisponível";
       const orderNumber = documentLines[1] ?? "Informação indisponível";

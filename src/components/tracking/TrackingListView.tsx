@@ -7,7 +7,7 @@ import { Alert } from "@/components/ui/Alert";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { PackageListLoading } from "@/components/tracking/TrackingLoadingStates";
-import { maskCpfHidden } from "@/utils/formatters";
+import { maskCpfHidden } from "@/utils/formatters/cpf.formatter";
 
 type TrackingListViewProps = {
   cpf: string;

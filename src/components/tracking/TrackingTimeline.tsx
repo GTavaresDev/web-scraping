@@ -1,4 +1,4 @@
-import type { TrackingEvent } from "@/lib/types";
+import type { TrackingEvent } from "@/types";
 
 type TrackingTimelineProps = {
   events: TrackingEvent[];

@@ -1,5 +1,5 @@
 import type { HTMLAttributes, ReactNode } from "react";
-import { cn } from "@/lib/classNames";
+import { cn } from "@/utils";
 
 type CardProps = HTMLAttributes<HTMLDivElement> & {
   children: ReactNode;

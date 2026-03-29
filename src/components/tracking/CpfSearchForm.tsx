@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation";
 import { useTracking } from "@/components/tracking/TrackingProvider";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import type { TrackingError, TrackingResponse } from "@/lib/types";
-import { validateCpf } from "@/lib/validators";
-import { maskCpf, onlyDigits } from "@/utils/formatters";
+import type { TrackingError, TrackingResponse } from "@/types";
+import { maskCpf, onlyDigits } from "@/utils/formatters/cpf.formatter";
+import { validateCpf } from "@/utils/validators/cpf.validator";
 
 function getValidationMessage(cpf: string, touched: boolean): string {
   if (!touched) {

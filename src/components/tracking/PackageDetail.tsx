@@ -1,4 +1,4 @@
-import type { PackageDetail as PackageDetailType } from "@/lib/types";
+import type { PackageDetail as PackageDetailType } from "@/types";
 import { Card } from "@/components/ui/Card";
 import { StatusBadge } from "@/components/tracking/StatusBadge";
 import { TrackingTimeline } from "@/components/tracking/TrackingTimeline";

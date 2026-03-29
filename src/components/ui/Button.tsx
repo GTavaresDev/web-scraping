@@ -1,5 +1,5 @@
 import type { ButtonHTMLAttributes, ReactNode } from "react";
-import { cn } from "@/lib/classNames";
+import { cn } from "@/utils";
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   children: ReactNode;
