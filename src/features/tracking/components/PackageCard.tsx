@@ -12,7 +12,7 @@ export function PackageCard({ item, scrapedAt }: PackageCardProps) {
   return (
     <Link
       href={`/detail/${item.id}`}
-      className="group block rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition-all hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md sm:p-5"
+      className="group block rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition-all hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md focus-visible:ring-2 focus-visible:ring-slate-300 focus-visible:ring-offset-2 sm:p-5"
     >
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="min-w-0 space-y-2">
@@ -49,6 +49,12 @@ export function PackageCard({ item, scrapedAt }: PackageCardProps) {
             {formatRelativeDate(item.lastEvent.dateTime, scrapedAt)}
           </span>
         </div>
+      </div>
+
+      <div className="mt-4 flex justify-end">
+        <span className="inline-flex whitespace-nowrap items-center justify-center rounded-lg bg-slate-700 px-2.5 py-1.5 text-xs font-medium text-white transition-colors group-hover:bg-slate-800">
+          Ver detalhes
+        </span>
       </div>
     </Link>
   );
