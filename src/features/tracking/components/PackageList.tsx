@@ -1,5 +1,5 @@
 import type { PackageSummary } from "@/types";
-import { PackageCard } from "@/components/tracking/PackageCard";
+import { PackageCard } from "@/features/tracking/components/PackageCard";
 
 type PackageListProps = {
   items: PackageSummary[];

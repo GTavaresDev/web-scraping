@@ -2,7 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
-import { useTracking } from "@/components/tracking/TrackingProvider";
+import { useTracking } from "@/features/tracking/provider/TrackingProvider";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import type { TrackingError, TrackingResponse } from "@/types";

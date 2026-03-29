@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useTracking } from "@/components/tracking/TrackingProvider";
+import { useTracking } from "@/features/tracking/provider/TrackingProvider";
 import { APP_NAME } from "@/utils/constants";
 
 export function Header() {

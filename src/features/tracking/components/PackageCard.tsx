@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { PackageSummary } from "@/types";
 import { formatRelativeDate } from "@/utils/formatters/date.formatter";
-import { StatusBadge } from "@/components/tracking/StatusBadge";
+import { StatusBadge } from "@/features/tracking/components/StatusBadge";
 
 type PackageCardProps = {
   item: PackageSummary;
