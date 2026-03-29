@@ -1,22 +1,13 @@
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import * as cheerio from "cheerio";
+import { getRuntimeEnv } from "@/config";
 import type { ScraperError, SswFormFields } from "@/types";
 import { REQUEST_TIMEOUT_MS, SSW_BASE_URL, SSW_TRACKING_URL } from "@/utils/constants";
 
 const execFileAsync = promisify(execFile);
 const USER_AGENT =
   "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123 Safari/537.36";
-
-function buildCurlEnv(): NodeJS.ProcessEnv {
-  const env = { ...process.env };
-
-  delete env.LD_PRELOAD;
-  delete env.DYLD_INSERT_LIBRARIES;
-  delete env.DYLD_LIBRARY_PATH;
-
-  return env;
-}
 
 function createScraperError(
   code: ScraperError["code"],
@@ -32,7 +23,7 @@ async function runCurl(args: string[], attempt = 0): Promise<string> {
   try {
     const { stdout } = await execFileAsync("curl", args, {
       maxBuffer: 2_000_000,
-      env: buildCurlEnv(),
+      env: getRuntimeEnv(),
     });
 
     return stdout;
