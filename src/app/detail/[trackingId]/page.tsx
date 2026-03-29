@@ -1,5 +1,5 @@
-import { TrackingDetailView } from "@/components/tracking/TrackingDetailView";
+import Detail from "@/components/pages/Detail";
 
 export default function DetailPage() {
-  return <TrackingDetailView />;
+  return <Detail />;
 }
