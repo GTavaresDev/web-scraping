@@ -1,4 +1,4 @@
-import { TrackingListView } from "@/components/tracking/TrackingListView";
+import { TrackingListView } from "@/features/tracking/components/TrackingListView";
 
 type TrackingProps = {
   cpf: string;

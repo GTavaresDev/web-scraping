@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { PackageDetail } from "@/components/tracking/PackageDetail";
-import { PackageDetailLoading } from "@/components/tracking/TrackingLoadingStates";
-import { useTracking } from "@/components/tracking/TrackingProvider";
+import { PackageDetail } from "@/features/tracking/components/PackageDetail";
+import { PackageDetailLoading } from "@/features/tracking/components/TrackingLoadingStates";
+import { useTracking } from "@/features/tracking/provider/TrackingProvider";
 import { Alert } from "@/components/ui/Alert";
 import { Button } from "@/components/ui/Button";
 

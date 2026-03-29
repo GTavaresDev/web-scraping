@@ -1,4 +1,4 @@
-import { PackageListLoading } from "@/components/tracking/TrackingLoadingStates";
+import { PackageListLoading } from "@/features/tracking/components/TrackingLoadingStates";
 
 export default function LoadingTrackingPage() {
   return <PackageListLoading />;
