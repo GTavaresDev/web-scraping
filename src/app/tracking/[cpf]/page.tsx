@@ -1,5 +1,5 @@
-import { TrackingListView } from "@/components/tracking/TrackingListView";
+import Tracking from "@/components/pages/Tracking";
 
 export default function TrackingPage() {
-  return <TrackingListView />;
+  return <Tracking />;
 }
