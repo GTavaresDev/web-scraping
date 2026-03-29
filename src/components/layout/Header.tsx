@@ -30,7 +30,18 @@ export function Header() {
             <p className="text-sm font-semibold tracking-[0.18em] text-slate-500 uppercase">
               Área do cliente
             </p>
-            <p className="text-lg font-semibold">Rastreio</p>
+            <p className="inline-flex items-center gap-2 text-lg font-semibold">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+                className="transform-none fill-slate-900"
+              >
+                <path d="M12 22a49.749 49.749 0 0 1-3.5-4.624C6.9 14.98 5 11.583 5 9a7 7 0 0 1 14 0c0 2.583-1.9 5.98-3.5 8.375A49.752 49.752 0 0 1 12 22Zm0-16a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z" />
+              </svg>
+              Rastreamento
+            </p>
           </div>
         </Link>
         <p className="hidden text-sm text-slate-500 sm:block">

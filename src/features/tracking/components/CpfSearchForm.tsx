@@ -61,17 +61,22 @@ export function CpfSearchForm() {
           cpf: validation.cleaned,
         }),
       });
-      const payload = (await response.json()) as TrackingResponse | TrackingError;
+      const payload = (await response.json()) as
+        | TrackingResponse
+        | TrackingError;
 
       if (!payload.success) {
         setError(
-          payload.error || "Não foi possível buscar as encomendas no momento. Tente novamente.",
+          payload.error ||
+            "Não foi possível buscar as encomendas no momento. Tente novamente.",
         );
         return;
       }
 
       if (!response.ok) {
-        setError("Não foi possível buscar as encomendas no momento. Tente novamente.");
+        setError(
+          "Não foi possível buscar as encomendas no momento. Tente novamente.",
+        );
         return;
       }
 
@@ -91,11 +96,9 @@ export function CpfSearchForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="space-y-2">
-        <label htmlFor="cpf" className="text-sm font-medium text-slate-700">
-          CPF
-        </label>
         <Input
           id="cpf"
+          aria-label="CPF"
           type="text"
           inputMode="numeric"
           autoComplete="off"
@@ -122,7 +125,11 @@ export function CpfSearchForm() {
 
       {error ? <p className="text-sm text-red-600">{error}</p> : null}
 
-      <Button className="w-full" disabled={loading} type="submit">
+      <Button
+        className="w-full bg-black hover:bg-neutral-900 focus-visible:ring-neutral-500"
+        disabled={loading}
+        type="submit"
+      >
         {loading ? (
           <>
             <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />
