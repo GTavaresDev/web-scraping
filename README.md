@@ -345,7 +345,3 @@ A camada `config/` evita espalhar `process.env` pelo projeto e torna o acesso a 
 - Adapter HTTP fino na API
 - Componentes reutilizáveis na camada `ui`
 - Naming consistente entre pastas e responsabilidades
-
-## Considerações finais
-
-Este projeto foi estruturado para demonstrar capacidade de organização arquitetural, separação de responsabilidades e construção de um pipeline completo de scraping com interface web moderna. É uma base sólida tanto para evolução técnica quanto para avaliação por outras pessoas desenvolvedoras, recrutadores e times técnicos.
