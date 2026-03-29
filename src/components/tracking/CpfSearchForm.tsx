@@ -80,7 +80,7 @@ export function CpfSearchForm() {
         payload: payload.data,
         scrapedAt: payload.scrapedAt,
       });
-      router.push(`/tracking/${validation.cleaned}`);
+      router.push(`/tracking?cpf=${encodeURIComponent(validation.cleaned)}`);
     } catch {
       setError("Falha de rede ao consultar o rastreamento. Tente novamente.");
     } finally {

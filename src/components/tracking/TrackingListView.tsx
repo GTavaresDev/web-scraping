@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useParams } from "next/navigation";
 import { PackageList } from "@/components/tracking/PackageList";
 import { useTracking } from "@/components/tracking/TrackingProvider";
 import { Alert } from "@/components/ui/Alert";
@@ -10,9 +9,11 @@ import { Card } from "@/components/ui/Card";
 import { PackageListLoading } from "@/components/tracking/TrackingLoadingStates";
 import { maskCpfHidden } from "@/utils/formatters";
 
-export function TrackingListView() {
-  const params = useParams<{ cpf: string }>();
-  const cpf = Array.isArray(params.cpf) ? params.cpf[0] : params.cpf;
+type TrackingListViewProps = {
+  cpf: string;
+};
+
+export function TrackingListView({ cpf }: TrackingListViewProps) {
   const tracking = useTracking();
 
   if (!tracking.hydrated) {
